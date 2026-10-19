@@ -762,18 +762,19 @@ body {
 }
 .film-frame {
   position: relative;
-  padding: 8px;
+  padding: 0;
   border-radius: 10px;
-  background: linear-gradient(160deg, #fffdf8, #f3ecdd);
-  border: 1px solid rgba(194, 161, 90, 0.45);
-  box-shadow: 0 16px 34px rgba(31, 45, 50, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.75) inset;
+  overflow: hidden;
+  background: #0d1418;
+  border: 1px solid rgba(39, 85, 127, 0.2);
+  box-shadow: 0 16px 34px rgba(31, 45, 50, 0.2);
   cursor: pointer;
 }
 .film-screen {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 4px;
+  /* 1280 x 720 原生比例：不裁切、不拉伸 */
+  aspect-ratio: 1280 / 720;
   overflow: hidden;
   background: #0d1418;
 }
@@ -786,7 +787,8 @@ body {
 }
 .film-screen video {
   width: 100%;
-  height: 100%;
+  height: auto;
+  max-height: 100%;
   object-fit: contain;
   display: block;
   user-select: none;
