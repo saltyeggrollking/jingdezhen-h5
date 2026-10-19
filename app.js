@@ -40,10 +40,11 @@
     nextBtn.disabled = index === total - 1;
     bar.style.width = ((index + 1) / total * 100) + '%';
     /* 页9场景在滑动进入时同步昼夜状态 */
-    if (index === 8) {
+    if (pages[index].classList.contains('page--p9')) {
       document.getElementById('p9scene').classList.toggle('dusk', document.getElementById('duskToggle').checked);
       document.querySelector('.page--p9').classList.toggle('dusk', document.getElementById('duskToggle').checked);
     }
+    syncFilm(index);
   }
 
   function next() { if (index < total - 1) go(index + 1); }
@@ -395,6 +396,81 @@
     paintBtn.textContent = '点一笔青花';
     go(0);
   });
+
+  /* ---------- 02 影片 ---------- */
+  var film = document.getElementById('filmVideo');
+  var filmFrame = document.getElementById('filmFrame');
+  var filmPlay = document.getElementById('filmPlay');
+  var filmMute = document.getElementById('filmMute');
+  var filmFill = document.getElementById('filmFill');
+  var filmTrack = document.getElementById('filmTrack');
+  var filmTime = document.getElementById('filmTime');
+
+  function fPad(n) { return (n < 10 ? '0' : '') + n; }
+  function fFmt(t) {
+    if (!isFinite(t)) t = 0;
+    return fPad(Math.floor(t / 60)) + ':' + fPad(Math.floor(t % 60));
+  }
+
+  function filmUI() {
+    if (!film) return;
+    filmFrame.classList.toggle('playing', !film.paused && !film.ended);
+    if (film.duration) {
+      filmFill.style.width = (film.currentTime / film.duration * 100) + '%';
+    }
+    filmTime.textContent = fFmt(film.currentTime) + ' / ' + fFmt(film.duration || 0);
+  }
+
+  function filmToggle() {
+    if (!film) return;
+    if (film.paused || film.ended) {
+      var pr = film.play();
+      if (pr && pr.catch) pr.catch(function () {});
+    } else {
+      film.pause();
+    }
+  }
+
+  function syncFilm(pageIndex) {
+    if (!film) return;
+    var onFilm = pages[pageIndex] && pages[pageIndex].classList.contains('page--film');
+    if (onFilm) {
+      if (film.paused) {
+        var pr = film.play();
+        if (pr && pr.catch) pr.catch(function () {});
+      }
+    } else if (!film.paused) {
+      film.pause();
+    }
+  }
+
+  if (film) {
+    film.addEventListener('loadedmetadata', filmUI);
+    film.addEventListener('timeupdate', filmUI);
+    film.addEventListener('play', filmUI);
+    film.addEventListener('pause', filmUI);
+    film.addEventListener('ended', filmUI);
+    filmPlay.addEventListener('click', function (e) {
+      e.stopPropagation();
+      filmToggle();
+    });
+    filmFrame.addEventListener('click', filmToggle);
+    filmMute.addEventListener('click', function (e) {
+      e.stopPropagation();
+      film.muted = !film.muted;
+      filmMute.classList.toggle('on', !film.muted);
+      filmMute.textContent = film.muted ? '开启声音' : '关闭声音';
+      if (!film.muted && film.paused) filmToggle();
+    });
+    filmTrack.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (!film.duration) return;
+      var r = filmTrack.getBoundingClientRect();
+      film.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * film.duration;
+      filmUI();
+    });
+    filmUI();
+  }
 
   /* ---------- 初始化 ---------- */
   go(0, true);
