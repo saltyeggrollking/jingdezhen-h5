@@ -1,0 +1,752 @@
+/* 景德镇陶瓷 H5 — 青花 / 釉白 / 朱砂 */
+:root {
+  --ink: #1b2b31;
+  --ink-2: #4a5c64;
+  --ink-3: #7d8f95;
+  --blue: #27557f;
+  --blue-2: #4a7fa5;
+  --blue-soft: rgba(39, 85, 127, 0.12);
+  --celadon: #9fbdb6;
+  --porcelain: #fbf9f4;
+  --paper: #f4f0e6;
+  --paper-2: #ece6d9;
+  --cinnabar: #b03a2e;
+  --gold: #c2a15a;
+  --line: rgba(39, 85, 127, 0.16);
+  --serif: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", "SimSun", "宋体", serif;
+  --sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", sans-serif;
+  --ease: cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #e7e2d6;
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 520px;
+  margin: 0 auto;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 60% at 12% 0%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 60%),
+    radial-gradient(90% 50% at 100% 100%, rgba(159, 189, 182, 0.22), rgba(255, 255, 255, 0) 70%),
+    linear-gradient(170deg, #fbf8f1 0%, var(--paper) 46%, #efe9dc 100%);
+  isolation: isolate;
+}
+
+/* 釉面细纹底纹 */
+#app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    linear-gradient(0deg, rgba(39, 85, 127, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(39, 85, 127, 0.035) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(80% 70% at 50% 40%, #000 20%, transparent 100%);
+}
+
+@media (min-width: 560px) and (min-height: 700px) {
+  #app {
+    height: min(880px, 94dvh);
+    border-radius: 30px;
+    box-shadow: 0 30px 80px rgba(34, 48, 52, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  }
+}
+
+/* ---------- 顶栏 ---------- */
+.topbar {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top, 0px) + 14px) 24px 6px;
+  font-family: var(--serif);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  color: var(--blue);
+}
+
+.brand .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cinnabar);
+  box-shadow: 0 0 0 4px rgba(176, 58, 46, 0.1);
+}
+
+.counter {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--ink-3);
+  font-family: var(--sans);
+}
+.counter b {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* ---------- 页面容器 ---------- */
+.viewport {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.track {
+  display: flex;
+  height: 100%;
+  transform: translate3d(calc(var(--i) * -100%), 0, 0);
+  transition: transform 0.58s var(--ease);
+  will-change: transform;
+}
+.track.dragging { transition: none; }
+
+.page {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  padding: 4px 26px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-inner {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 4px;
+}
+
+/* ---------- 文字 ---------- */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  color: var(--blue-2);
+  font-family: var(--sans);
+}
+.kicker::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(25px, 7.2vw, 33px);
+  line-height: 1.34;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+.title em {
+  font-style: normal;
+  color: var(--blue);
+  position: relative;
+}
+.title em::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3px;
+  height: 7px;
+  background: rgba(159, 189, 182, 0.35);
+  z-index: -1;
+}
+
+.copy {
+  margin: 0;
+  max-width: 22em;
+  font-size: 14px;
+  line-height: 2.05;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  font-family: var(--serif);
+}
+
+.art {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 0;
+}
+.art svg {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: visible;
+}
+
+.cover-art svg {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: visible;
+}
+
+.wheel-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+
+/* 落款印章 */
+.seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1.4px solid var(--cinnabar);
+  border-radius: 4px;
+  color: var(--cinnabar);
+  font-family: var(--serif);
+  font-size: 11px;
+  line-height: 1.05;
+  letter-spacing: 0;
+  text-align: center;
+  opacity: 0.85;
+  padding: 2px;
+}
+
+/* ---------- 通用按钮 ---------- */
+.btn {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--blue);
+  font-family: var(--serif);
+  font-size: 13.5px;
+  letter-spacing: 0.16em;
+  padding: 11px 22px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease), background 0.2s, box-shadow 0.2s, color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+}
+.btn:active { transform: scale(0.965); }
+
+.btn-solid {
+  background: linear-gradient(140deg, #2e5f8a, #1f4a72);
+  color: #fbf8f1;
+  border-color: transparent;
+  box-shadow: 0 10px 24px rgba(31, 74, 114, 0.26);
+}
+
+.btn-ghost { background: transparent; }
+
+.btn-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hint {
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--ink-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.hint i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--cinnabar);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+/* ---------- 入场动画 ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.page.active .reveal {
+  animation: rise 0.72s var(--ease) forwards;
+  animation-delay: var(--d, 0s);
+}
+@keyframes rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- 底部导航 ---------- */
+.navbar {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 22px calc(env(safe-area-inset-bottom, 0px) + 14px);
+}
+
+.nav-btn {
+  appearance: none;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--blue);
+  font-size: 16px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease), opacity 0.2s, background 0.2s;
+}
+.nav-btn:active { transform: scale(0.92); }
+.nav-btn[disabled] { opacity: 0.28; pointer-events: none; }
+
+.dots {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.dots button {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 4px;
+  background: rgba(39, 85, 127, 0.22);
+  cursor: pointer;
+  transition: all 0.35s var(--ease);
+}
+.dots button.on {
+  width: 22px;
+  background: var(--blue);
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2px;
+  width: 0;
+  background: linear-gradient(90deg, rgba(194, 161, 90, 0.65), rgba(39, 85, 127, 0.45));
+  transition: width 0.5s var(--ease);
+}
+
+/* ---------- P1 封面 ---------- */
+.page--cover .page-inner { justify-content: flex-end; padding-bottom: 10px; }
+.cover-top {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+.cover-art { position: absolute; inset: 0; }
+.cover-copy {
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.cover-title {
+  font-family: var(--serif);
+  font-size: clamp(34px, 10.6vw, 46px);
+  letter-spacing: 0.16em;
+  margin: 8px 0 6px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.cover-sub {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--blue-2);
+  margin: 0 0 16px;
+}
+.cover-rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--ink-3);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  font-family: var(--sans);
+}
+.cover-rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+.petal { animation: float 7s ease-in-out infinite; transform-origin: center; }
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.55; }
+  50% { transform: translate(6px, -12px) rotate(12deg); opacity: 0.95; }
+}
+
+.spin-slow { animation: spin 26s linear infinite; transform-origin: 150px 160px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- P4 拉坯 ---------- */
+.wheel-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(100%, 300px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+}
+.wheel-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.hold-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: conic-gradient(var(--cinnabar) calc(var(--p, 0) * 1turn), rgba(39, 85, 127, 0.08) 0);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.wheel-wrap.pressing .hold-ring { opacity: 1; }
+
+#clayG {
+  transform: scaleX(calc(1.38 - var(--p, 0) * 0.64));
+  transform-origin: 140px 150px;
+  transition: transform 0.08s linear;
+}
+#handL { transform: translateX(calc(var(--p, 0) * 16px)); transition: transform 0.1s linear; }
+#handR { transform: translateX(calc(var(--p, 0) * -16px)); transition: transform 0.1s linear; }
+
+.wheel-spokes { animation: spin 9s linear infinite; transform-origin: 140px 140px; }
+.wheel-wrap.pressing .wheel-spokes { animation-duration: 1.4s; }
+.wheel-wrap.pressing .wheel-wrap svg { filter: saturate(1.05); }
+
+.wheel-note {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  font-family: var(--serif);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--ink-3);
+  white-space: nowrap;
+  transition: all 0.3s;
+}
+.wheel-wrap.done .wheel-note { color: var(--cinnabar); }
+
+/* ---------- P5 青花点染 ---------- */
+.ink-stroke {
+  opacity: 0;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  transform-origin: center;
+}
+.ink-stroke.on { opacity: 1; }
+.vase-tap { cursor: pointer; touch-action: manipulation; }
+.brush {
+  transition: transform 0.45s var(--ease);
+}
+.vase-tap.painting + .brush-hint .brush,
+.brush-row .brush { transition: transform 0.45s var(--ease); }
+
+/* ---------- P6 窑变 ---------- */
+.kiln-fire {
+  animation: flick 1.5s ease-in-out infinite alternate;
+  transform-origin: center bottom;
+  transform-box: fill-box;
+}
+@keyframes flick {
+  from { transform: scaleY(0.9) scaleX(0.96); opacity: 0.85; }
+  to { transform: scaleY(1.06) scaleX(1.03); opacity: 1; }
+}
+#glazeJar path.body {
+  transition: fill 0.9s ease;
+}
+.jar-wrap { transition: transform 0.6s var(--ease); }
+.jar-wrap.firing { animation: shake 0.5s ease-in-out; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(0); }
+  25% { transform: translateX(-2px) rotate(-1deg); }
+  75% { transform: translateX(2px) rotate(1deg); }
+}
+.color-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.color-chip span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--chip, #b03a2e);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- P7 四大名瓷 ---------- */
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.tabs button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 8px 2px;
+  border-radius: 10px;
+  font-family: var(--serif);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.28s var(--ease);
+}
+.tabs button.on {
+  background: var(--blue);
+  color: #fbf8f1;
+  box-shadow: 0 6px 14px rgba(31, 74, 114, 0.22);
+}
+
+.p7-desc {
+  min-height: 44px;
+  font-family: var(--serif);
+  font-size: 12.5px;
+  line-height: 1.9;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  transition: opacity 0.22s;
+}
+.p7-desc.fade { opacity: 0; }
+
+.vase-item {
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+.vase-item.dim { opacity: 0.38; transform: scale(0.94); }
+.vase-item.on { opacity: 1; transform: scale(1.04); }
+
+/* ---------- P8 工序 ---------- */
+.stage-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 6px 2px 10px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  touch-action: pan-x;
+}
+.stage-scroll::-webkit-scrollbar { display: none; }
+
+.stage-card {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  width: 74px;
+  padding: 12px 4px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s var(--ease);
+}
+.stage-card b {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.stage-card i {
+  font-style: normal;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-3);
+}
+.stage-card.on {
+  background: linear-gradient(160deg, #2e5f8a, #204a70);
+  border-color: transparent;
+  box-shadow: 0 10px 20px rgba(31, 74, 114, 0.2);
+}
+.stage-card.on b { color: #fbf8f1; }
+.stage-card.on i { color: rgba(251, 248, 241, 0.65); }
+
+.stage-detail {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ink-2);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.stage-detail b {
+  font-family: var(--serif);
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--blue);
+  line-height: 1;
+}
+.stage-detail small { font-size: 10px; color: var(--ink-3); letter-spacing: 0.16em; }
+
+/* ---------- P9 匠人 ---------- */
+.p9-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f7f3e9, #eae3d4);
+  transition: background 0.8s ease;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+}
+.page--p9.dusk .p9-scene { background: linear-gradient(180deg, #1d2b3a, #33302a 70%, #4a3a2b); }
+.p9-scene svg { width: 100%; height: 100%; }
+
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.55);
+}
+.switch-row span {
+  font-family: var(--serif);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+.switch {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  flex: 0 0 48px;
+}
+.switch input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.switch .slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(39, 85, 127, 0.18);
+  transition: background 0.3s;
+  pointer-events: none;
+}
+.switch .slider::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: transform 0.32s var(--ease);
+}
+.switch input:checked + .slider { background: var(--cinnabar); }
+.switch input:checked + .slider::after { transform: translateX(22px); }
+
+/* ---------- P10 尾页 ---------- */
+.page--end .page-inner { justify-content: center; gap: 14px; text-align: center; align-items: center; }
+.end-art { width: 100%; max-height: 34%; }
+.end-title { letter-spacing: 0.22em; }
+.end-copy { text-align: center; max-width: 18em; }
+.end-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px; }
+.end-actions .btn { width: 100%; }
+
+.footer-note {
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  color: var(--ink-3);
+  opacity: 0.75;
+  margin-top: 2px;
+}
+
+/* 小屏适配 */
+@media (max-height: 700px) {
+  .title { font-size: clamp(22px, 6.6vw, 28px); }
+  .copy { font-size: 13px; line-height: 1.85; }
+  .page-inner { gap: 7px; }
+  .cover-title { font-size: clamp(30px, 9.4vw, 40px); }
+  .stage-scroll { padding-bottom: 6px; }
+}
