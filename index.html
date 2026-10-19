@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#f4f0e6" />
+<meta name="description" content="瓷都景德镇 · 千年窑火，一抔高岭土的故事" />
+<title>瓷都景德镇 · 千年窑火</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <header class="topbar">
+    <div class="brand"><span class="dot"></span>景 德 镇</div>
+    <div class="counter"><b id="cur">01</b> / 10</div>
+  </header>
+
+  <div class="viewport" id="viewport">
+    <div class="track" id="track" style="--i:0">
+
+      <!-- ========== 01 封面 ========== -->
+      <section class="page page--cover active">
+        <div class="cover-top">
+          <div class="cover-art">
+            <svg width="300" height="380" viewBox="0 0 300 380" preserveAspectRatio="xMidYMid meet" aria-label="青花梅瓶">
+              <defs>
+                <linearGradient id="por" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ffffff"/>
+                  <stop offset=".55" stop-color="#f8fbf8"/>
+                  <stop offset="1" stop-color="#dde8e3"/>
+                </linearGradient>
+                <radialGradient id="disc" cx=".5" cy=".42" r=".62">
+                  <stop offset="0" stop-color="#dcebe4" stop-opacity=".95"/>
+                  <stop offset=".7" stop-color="#cfe3da" stop-opacity=".45"/>
+                  <stop offset="1" stop-color="#cfe3da" stop-opacity="0"/>
+                </radialGradient>
+                <clipPath id="vaseClip">
+                  <path d="M128 44 C128 44 124 78 112 94 C92 118 84 168 92 216 C98 252 118 272 150 272 C182 272 202 252 208 216 C216 168 208 118 188 94 C176 78 172 44 172 44 Z"/>
+                </clipPath>
+              </defs>
+
+              <circle cx="150" cy="166" r="122" fill="url(#disc)"/>
+
+              <ellipse cx="150" cy="292" rx="76" ry="9" fill="#2a567f" opacity=".09"/>
+
+              <g>
+                <path d="M128 44 C128 44 124 78 112 94 C92 118 84 168 92 216 C98 252 118 272 150 272 C182 272 202 252 208 216 C216 168 208 118 188 94 C176 78 172 44 172 44 Z"
+                      fill="url(#por)" stroke="#2e5f8a" stroke-width="1.4"/>
+                <g clip-path="url(#vaseClip)">
+                  <ellipse cx="118" cy="164" rx="11" ry="66" fill="#ffffff" opacity=".5" transform="rotate(-9 118 164)"/>
+
+                  <!-- 颈部弦纹 -->
+                  <path d="M118 62 H182" stroke="#2e5f8a" stroke-width="1" opacity=".55"/>
+                  <path d="M114 68 H186" stroke="#2e5f8a" stroke-width=".7" opacity=".35"/>
+
+                  <!-- 肩部卷草纹 -->
+                  <g fill="none" stroke="#2e5f8a" stroke-width="1" opacity=".5">
+                    <path d="M84 128 q12 -13 24 0 t24 0 t24 0 t24 0 t24 0"/>
+                    <path d="M84 136 q12 -13 24 0 t24 0 t24 0 t24 0 t24 0" opacity=".6"/>
+                  </g>
+
+                  <!-- 折枝莲 -->
+                  <g fill="#2e5f8a" opacity=".55">
+                    <ellipse cx="150" cy="158" rx="6.5" ry="14"/>
+                    <ellipse cx="150" cy="158" rx="6.5" ry="14" transform="rotate(72 150 177)"/>
+                    <ellipse cx="150" cy="158" rx="6.5" ry="14" transform="rotate(144 150 177)"/>
+                    <ellipse cx="150" cy="158" rx="6.5" ry="14" transform="rotate(216 150 177)"/>
+                    <ellipse cx="150" cy="158" rx="6.5" ry="14" transform="rotate(288 150 177)"/>
+                    <circle cx="150" cy="177" r="4.6" fill="#1f4a72"/>
+                  </g>
+                  <g fill="none" stroke="#2e5f8a" stroke-width="1.2" opacity=".55">
+                    <path d="M150 192 q-3 16 3 30"/>
+                    <path d="M148 208 q-16 -2 -24 -14 q14 -4 24 6"/>
+                    <path d="M151 214 q16 0 24 -12 q-15 -3 -24 6"/>
+                  </g>
+
+                  <!-- 胫部蕉叶纹 -->
+                  <g fill="#2e5f8a" opacity=".4">
+                    <path d="M104 236 q10 -30 26 -36 q2 26 -14 44 q-8 4 -12 -8z"/>
+                    <path d="M196 236 q-10 -30 -26 -36 q-2 26 14 44 q8 4 12 -8z"/>
+                    <path d="M140 240 q10 -22 10 -30 q0 8 10 30 q-4 10 -10 10 q-6 0 -10 -10z"/>
+                  </g>
+                </g>
+
+                <ellipse cx="150" cy="44" rx="22" ry="6.5" fill="#f3f8f5" stroke="#2e5f8a" stroke-width="1.2"/>
+                <ellipse cx="150" cy="44" rx="15" ry="4" fill="#dfe9e3"/>
+                <ellipse cx="150" cy="272" rx="34" ry="7.5" fill="#eef4f0" stroke="#2e5f8a" stroke-width="1.1"/>
+              </g>
+
+              <g class="petal" style="animation-delay:0s">
+                <ellipse cx="238" cy="96" rx="4.6" ry="2.4" fill="#c9a7a0" opacity=".7" transform="rotate(-28 238 96)"/>
+              </g>
+              <g class="petal" style="animation-delay:1.1s">
+                <ellipse cx="62" cy="140" rx="4" ry="2.1" fill="#a9c3bc" opacity=".8" transform="rotate(24 62 140)"/>
+              </g>
+              <g class="petal" style="animation-delay:2.3s">
+                <ellipse cx="226" cy="240" rx="4.4" ry="2.2" fill="#c9a7a0" opacity=".65" transform="rotate(38 226 240)"/>
+              </g>
+              <g class="petal" style="animation-delay:3.1s">
+                <ellipse cx="74" cy="78" rx="3.6" ry="1.9" fill="#a9c3bc" opacity=".75" transform="rotate(-16 74 78)"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="cover-copy">
+          <div class="kicker reveal" style="--d:.04s">千年窑火 · 一镇瓷器</div>
+          <h1 class="cover-title reveal" style="--d:.1s">瓷都景德镇</h1>
+          <p class="cover-sub reveal" style="--d:.16s">白如玉 · 明如镜 · 薄如纸 · 声如磬</p>
+          <p class="copy reveal" style="--d:.22s">土与火的相逢，凝成中国的颜色。</p>
+          <div class="cover-rule reveal" style="--d:.28s">昌南旧事</div>
+          <div class="btn-row reveal" style="--d:.34s">
+            <button class="btn btn-solid" data-next>轻触启程 →</button>
+            <span class="seal">昌南</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 02 千年瓷都 ========== -->
+      <section class="page page--p2">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第一章 · 昌江</div>
+          <h2 class="title reveal" style="--d:.08s">昌江畔的<em>千年窑火</em></h2>
+
+          <div class="art reveal" style="--d:.14s">
+            <svg width="320" height="260" viewBox="0 0 320 260" preserveAspectRatio="xMidYMid meet" aria-label="昌江与古镇">
+              <defs>
+                <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#cfe0da"/>
+                  <stop offset="1" stop-color="#f1eee2"/>
+                </linearGradient>
+                <radialGradient id="moonglow" cx=".5" cy=".5" r=".5">
+                  <stop offset="0" stop-color="#f7f2e2" stop-opacity=".95"/>
+                  <stop offset="1" stop-color="#f7f2e2" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+
+              <circle cx="248" cy="62" r="52" fill="url(#moonglow)"/>
+              <circle cx="248" cy="62" r="24" fill="#f8f4e6" stroke="#e2dac6" stroke-width=".8"/>
+
+              <path d="M0 152 L44 116 L84 150 L124 106 L166 152 L204 118 L244 152 L284 118 L320 148 L320 200 L0 200 Z"
+                    fill="#c6d8d1" opacity=".55"/>
+              <path d="M0 166 L50 138 L96 168 L142 140 L190 170 L236 144 L284 172 L320 152 L320 200 L0 200 Z"
+                    fill="#aec9c1" opacity=".5"/>
+
+              <!-- 古镇剪影 -->
+              <g fill="#2a567f" opacity=".85">
+                <path d="M0 188 V176 H20 L30 166 L40 176 H62 L72 164 L82 176 H100 V188 Z"/>
+                <path d="M108 188 V172 H132 L142 160 L152 172 H176 V188 Z"/>
+                <path d="M184 188 V174 H206 L216 164 L226 174 H252 V188 Z"/>
+                <path d="M260 188 V176 H286 L296 166 L306 176 H320 V188 Z"/>
+                <rect x="188" y="146" width="7" height="30"/>
+                <path d="M186 146 h11 l-5 -8 z" opacity=".9"/>
+              </g>
+
+              <!-- 塔 -->
+              <g fill="#234b70" opacity=".9">
+                <path d="M55 176 h14 v-13 h-14 z"/>
+                <path d="M50 163 h24 l-4 -6 h-16 z"/>
+                <path d="M47 152 h30 l-5 -6 h-20 z"/>
+                <path d="M44 141 h36 l-6 -6 h-24 z"/>
+                <path d="M60 135 h4 l-2 -12 z"/>
+                <circle cx="62" cy="120" r="1.8"/>
+              </g>
+
+              <!-- 窑烟 -->
+              <path d="M191 140 c-6 -14 6 -20 2 -32 c-4 -12 8 -16 6 -26"
+                    fill="none" stroke="#9fbdb6" stroke-width="1.6" opacity=".5" stroke-linecap="round"/>
+
+              <rect x="0" y="196" width="320" height="64" fill="url(#water)"/>
+              <g stroke="#ffffff" stroke-width="1.6" opacity=".75" stroke-linecap="round">
+                <path d="M28 210 h34"/><path d="M84 218 h22"/><path d="M136 208 h40"/>
+                <path d="M196 220 h28"/><path d="M244 210 h36"/><path d="M62 232 h26"/>
+                <path d="M154 236 h30"/><path d="M226 240 h22"/>
+              </g>
+              <g stroke="#8fb0a7" stroke-width="1" opacity=".45" stroke-linecap="round">
+                <path d="M44 224 h18"/><path d="M112 226 h26"/><path d="M180 212 h16"/><path d="M262 228 h20"/>
+              </g>
+
+              <!-- 小舟 -->
+              <g opacity=".8">
+                <path d="M196 236 q16 9 32 0 q-6 10 -16 10 q-10 0 -16 -10z" fill="#2a567f"/>
+                <path d="M212 236 v-16 l12 16 z" fill="#2a567f"/>
+              </g>
+
+              <path d="M0 252 Q76 240 152 250 T320 244 L320 260 L0 260 Z" fill="#e9e2d3"/>
+            </svg>
+          </div>
+
+          <p class="copy reveal" style="--d:.2s">新平冶陶，始于汉世；宋景德年间，以年号名镇。</p>
+          <div class="hint reveal" style="--d:.26s"><i></i>左右滑动，继续前行</div>
+        </div>
+      </section>
+
+      <!-- ========== 03 高岭土 ========== -->
+      <section class="page page--p3">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第二章 · 瓷骨</div>
+          <h2 class="title reveal" style="--d:.08s">一抔<em>高岭土</em></h2>
+
+          <div class="art reveal" style="--d:.14s">
+            <svg width="300" height="270" viewBox="0 0 300 270" preserveAspectRatio="xMidYMid meet" aria-label="高岭山与瓷土">
+              <defs>
+                <linearGradient id="clay" x1="0" y1="0" x2=".4" y2="1">
+                  <stop offset="0" stop-color="#fdfaf2"/>
+                  <stop offset=".6" stop-color="#f0e6d4"/>
+                  <stop offset="1" stop-color="#ddcdb4"/>
+                </linearGradient>
+              </defs>
+
+              <circle cx="86" cy="66" r="40" fill="#f3ecdb" opacity=".65"/>
+
+              <path d="M0 150 L48 96 L86 138 L128 88 L176 148 L216 104 L258 150 L300 118 L300 210 L0 210 Z"
+                    fill="#cddfd8" opacity=".55"/>
+              <path d="M0 172 L40 142 L80 176 L124 138 L168 178 L210 148 L250 180 L292 152 L300 160 L300 220 L0 220 Z"
+                    fill="#b3ccc4" opacity=".5"/>
+
+              <!-- 采石宕口 -->
+              <path d="M92 168 L112 130 L140 150 L152 122 L184 158 L198 142 L212 168 Z" fill="#e8e2d2" opacity=".9"/>
+              <path d="M112 130 L140 150 L152 122" fill="none" stroke="#cbbfa8" stroke-width="1"/>
+
+              <path d="M0 214 Q70 198 150 212 T300 206 L300 270 L0 270 Z" fill="#e7dfd0"/>
+
+              <!-- 瓷土 -->
+              <ellipse cx="165" cy="247" rx="64" ry="7" fill="#2a567f" opacity=".07"/>
+              <path d="M106 224 c-5 -20 10 -33 25 -35 c6 -19 32 -22 42 -7 c15 -7 32 3 32 18 c11 4 15 13 13 24 c-2 13 -19 15 -30 13 c-9 9 -28 11 -38 4 c-13 7 -32 2 -36 -9z"
+                    fill="url(#clay)" stroke="#d6c5ab" stroke-width="1.2"/>
+              <path d="M118 210 c9 -15 28 -19 41 -14" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".7" stroke-linecap="round"/>
+              <g fill="#cbb99d" opacity=".7">
+                <circle cx="132" cy="198" r="1.4"/><circle cx="160" cy="188" r="1.1"/>
+                <circle cx="182" cy="202" r="1.5"/><circle cx="148" cy="216" r="1"/>
+                <circle cx="196" cy="220" r="1.2"/>
+              </g>
+              <g class="petal" style="animation-delay:.4s" fill="#cbb99d">
+                <circle cx="214" cy="176" r="1.6" opacity=".6"/>
+              </g>
+              <g class="petal" style="animation-delay:1.6s" fill="#cbb99d">
+                <circle cx="120" cy="170" r="1.4" opacity=".55"/>
+              </g>
+            </svg>
+          </div>
+
+          <p class="copy reveal" style="--d:.2s">麻仓土白而细，淘洗、沉淀、踩泥，方得瓷骨。</p>
+          <div class="hint reveal" style="--d:.26s"><i></i>点底部按钮，也可翻页</div>
+        </div>
+      </section>
+
+      <!-- ========== 04 拉坯 · 长按 ========== -->
+      <section class="page page--p4">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第三章 · 手作</div>
+          <h2 class="title reveal" style="--d:.08s">指尖上的<em>圆</em></h2>
+
+          <div class="art reveal" style="--d:.14s">
+            <div class="wheel-wrap" id="wheel" role="button" tabindex="0" aria-label="长按拉坯">
+              <div class="hold-ring"></div>
+              <svg viewBox="0 0 280 280" preserveAspectRatio="xMidYMid meet">
+                <defs>
+                  <linearGradient id="clayg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#f6efe2"/>
+                    <stop offset="1" stop-color="#e2d4bb"/>
+                  </linearGradient>
+                  <path id="handPath" d="M18 150 c-4 -11 4 -21 16 -23 l24 -5 c8 -2 14 3 14 9 0 5 -3 8 -10 9 l-13 3 18 1 c8 1 13 5 13 10 0 5 -4 9 -11 9 l-25 2 -11 12 c-8 6 -19 1 -19 -10 z" fill="#eccdad" stroke="#d3a986" stroke-width="1.1"/>
+                </defs>
+
+                <circle cx="140" cy="140" r="126" fill="none" stroke="#27557f" stroke-width=".7" opacity=".12"/>
+                <circle cx="140" cy="140" r="118" fill="#ffffff" opacity=".72" stroke="#dfe9e5"/>
+                <circle cx="140" cy="140" r="100" fill="none" stroke="#e3ede9" stroke-width=".8"/>
+                <g class="wheel-spokes">
+                  <circle cx="140" cy="140" r="90" fill="none" stroke="#dbe7e2" stroke-width="13" stroke-dasharray="1.6 12"/>
+                </g>
+                <circle cx="140" cy="140" r="70" fill="none" stroke="#eaf2ee" stroke-width="10"/>
+                <circle cx="140" cy="140" r="58" fill="#f7f4ec" stroke="#e6eee9"/>
+
+                <g id="clayG">
+                  <path d="M104 150 C104 186 110 202 116 208 h48 C170 202 176 186 176 150 Z"
+                        fill="url(#clayg)" stroke="#d8c8ae" stroke-width="1.1"/>
+                  <ellipse cx="140" cy="150" rx="36" ry="12" fill="#faf4e8" stroke="#d8c8ae" stroke-width="1.1"/>
+                  <ellipse cx="140" cy="150" rx="24" ry="7.5" fill="#ece0cd"/>
+                  <path d="M114 158 c2 24 6 36 10 42" fill="none" stroke="#ffffff" stroke-width="2.2" opacity=".55" stroke-linecap="round"/>
+                </g>
+
+                <g id="handL"><use href="#handPath" xlink:href="#handPath"/></g>
+                <g id="handR"><g transform="translate(280,0) scale(-1,1)"><use href="#handPath" xlink:href="#handPath"/></g></g>
+
+                <g fill="#27557f" opacity=".28">
+                  <circle cx="140" cy="140" r="2.2"/>
+                </g>
+              </svg>
+              <div class="wheel-note">长按，让泥立起来</div>
+            </div>
+          </div>
+
+          <p class="copy reveal" style="--d:.2s">长按转盘，泥随指动。一分一毫，皆是功夫。</p>
+          <div class="hint reveal" style="--d:.26s"><i></i>长按转盘 1.8 秒，完成拉坯</div>
+        </div>
+      </section>
+
+      <!-- ========== 05 青花 ========== -->
+      <section class="page page--p5">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第四章 · 青花</div>
+          <h2 class="title reveal" style="--d:.08s"><em>青花</em>入釉</h2>
+
+          <div class="art reveal" style="--d:.14s">
+            <svg width="260" height="320" viewBox="0 0 260 320" preserveAspectRatio="xMidYMid meet" id="paintVase" class="vase-tap" role="button" tabindex="0" aria-label="点染青花">
+              <defs>
+                <linearGradient id="por5" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ffffff"/>
+                  <stop offset=".6" stop-color="#f9fbf8"/>
+                  <stop offset="1" stop-color="#e1eae5"/>
+                </linearGradient>
+                <clipPath id="clip5">
+                  <path d="M110 28 C110 28 104 66 86 84 C64 108 58 162 74 206 C86 240 108 256 130 256 C152 256 174 240 186 206 C202 162 196 108 174 84 C156 66 150 28 150 28 Z"/>
+                </clipPath>
+              </defs>
+
+              <ellipse cx="130" cy="268" rx="66" ry="8" fill="#2a567f" opacity=".08"/>
+              <path d="M110 28 C110 28 104 66 86 84 C64 108 58 162 74 206 C86 240 108 256 130 256 C152 256 174 240 186 206 C202 162 196 108 174 84 C156 66 150 28 150 28 Z"
+                    fill="url(#por5)" stroke="#2e5f8a" stroke-width="1.3"/>
+
+              <g clip-path="url(#clip5)" id="inkLayer" stroke="#2b5c88" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <g class="ink-stroke" data-s="1"><path d="M64 156 l17 -15 11 11 15 -21 17 23" stroke-width="1.8"/></g>
+                <g class="ink-stroke" data-s="2"><path d="M148 140 l14 -13 10 9 16 -16" stroke-width="1.6"/></g>
+                <g class="ink-stroke" data-s="3"><path d="M72 214 q9 -8 18 0 t18 0 t18 0 t18 0" stroke-width="1.6"/></g>
+                <g class="ink-stroke" data-s="4">
+                  <path d="M130 182 c-9 -14 0 -24 0 -24 c0 0 9 10 0 24" stroke-width="1.8"/>
+                  <path d="M122 168 c-9 -4 -13 -13 -9 -20" stroke-width="1.3"/>
+                  <path d="M138 168 c9 -4 13 -13 9 -20" stroke-width="1.3"/>
+                </g>
+                <g class="ink-stroke" data-s="5">
+                  <path d="M96 186 c-14 -6 -19 -22 -10 -32 c7 -8 18 -4 19 6" stroke-width="1.6"/>
+                </g>
+                <g class="ink-stroke" data-s="6">
+                  <path d="M164 186 c14 -6 19 -22 10 -32 c-7 -8 -18 -4 -19 6" stroke-width="1.6"/>
+                </g>
+                <g class="ink-stroke" data-s="7" fill="#2b5c88" stroke="none">
+                  <circle cx="106" cy="204" r="2.4"/><circle cx="120" cy="196" r="1.8"/>
+                  <circle cx="154" cy="204" r="2.4"/><circle cx="140" cy="196" r="1.8"/>
+                </g>
+                <g class="ink-stroke" data-s="8">
+                  <path d="M104 116 h52" stroke-width="1" opacity=".7"/>
+                  <path d="M110 108 h40" stroke-width="1" opacity=".5"/>
+                </g>
+              </g>
+
+              <g clip-path="url(#clip5)">
+                <ellipse cx="98" cy="150" rx="9" ry="52" fill="#ffffff" opacity=".55" transform="rotate(-8 98 150)"/>
+              </g>
+
+              <ellipse cx="130" cy="28" rx="20" ry="6" fill="#f4f8f5" stroke="#2e5f8a" stroke-width="1.1"/>
+              <ellipse cx="130" cy="28" rx="14" ry="3.6" fill="#dfe9e3"/>
+              <ellipse cx="130" cy="256" rx="36" ry="8" fill="#eef4f0" stroke="#2e5f8a" stroke-width="1"/>
+
+              <g class="brush" id="brush" transform="translate(206,120) rotate(-16)">
+                <rect x="-3.5" y="-74" width="7" height="104" rx="3.5" fill="#7a5b41"/>
+                <rect x="-4.5" y="28" width="9" height="12" rx="2" fill="#c2a15a"/>
+                <path d="M-4.5 40 q4.5 26 4.5 26 q0 0 4.5 -26 q-4.5 5 -9 0z" fill="#2b5c88"/>
+              </g>
+            </svg>
+          </div>
+
+          <p class="copy reveal" style="--d:.2s">苏麻离青一笔落下，白地生蓝，江山入瓷。</p>
+          <div class="btn-row reveal" style="--d:.26s">
+            <button class="btn" id="paintBtn">点一笔青花</button>
+            <span class="hint"><i></i>轻点瓷身也可落笔</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 06 窑变 ========== -->
+      <section class="page page--p6">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第五章 · 窑变</div>
+          <h2 class="title reveal" style="--d:.08s">入窑一色，出窑<em>万彩</em></h2>
+
+          <div class="art reveal" style="--d:.14s">
+            <svg width="300" height="280" viewBox="0 0 300 280" preserveAspectRatio="xMidYMid meet" aria-label="柴窑与釉色">
+              <defs>
+                <radialGradient id="fireGrad" cx=".5" cy=".82" r=".75">
+                  <stop offset="0" stop-color="#ffd98a"/>
+                  <stop offset=".45" stop-color="#ef9a3d"/>
+                  <stop offset="1" stop-color="#a83b1c"/>
+                </radialGradient>
+                <radialGradient id="glowG" cx=".5" cy=".5" r=".5">
+                  <stop offset="0" stop-color="#f0a24a" stop-opacity=".55"/>
+                  <stop offset="1" stop-color="#f0a24a" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="glaze" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" style="stop-color:var(--g1,#8c1f1c)"/>
+                  <stop offset=".55" style="stop-color:var(--g2,#b03a2e)"/>
+                  <stop offset="1" style="stop-color:var(--g3,#5d1216)"/>
+                </linearGradient>
+              </defs>
+
+              <ellipse cx="150" cy="200" rx="140" ry="80" fill="url(#glowG)"/>
+
+              <!-- 窑体 -->
+              <path d="M38 248 V162 a102 102 0 0 1 204 0 V248 Z" fill="#cdbca7" stroke="#b3a08a" stroke-width="1.2"/>
+              <g stroke="#b8a690" stroke-width=".8" opacity=".7" fill="none">
+                <path d="M38 190 H242"/><path d="M38 214 H242"/><path d="M38 238 H242"/>
+                <path d="M74 172 V248"/><path d="M112 165 V248"/><path d="M150 162 V248"/>
+                <path d="M188 165 V248"/><path d="M226 172 V248"/>
+              </g>
+              <path d="M132 62 h36 v18 h-36 z" fill="#b8a690"/>
+              <path d="M140 58 c-4 -14 6 -16 2 -28 c-3 -10 5 -12 4 -20"
+                    fill="none" stroke="#b6c8c0" stroke-width="2" opacity=".55" stroke-linecap="round"/>
+
+              <!-- 窑门与火 -->
+              <path d="M92 248 V172 a48 48 0 0 1 96 0 V248 Z" fill="#8f6b52"/>
+              <path d="M100 248 V174 a40 40 0 0 1 80 0 V248 Z" fill="url(#fireGrad)"/>
+              <g class="kiln-fire" fill="#ffd48a" opacity=".9">
+                <path d="M140 244 c-14 -6 -18 -24 -8 -36 c3 10 9 10 10 2 c1 -10 8 -12 10 -4 c2 8 12 12 10 24 c-2 10 -12 16 -22 14z"/>
+                <path d="M118 244 c-8 -4 -9 -16 -3 -23 c2 7 7 7 7 1 c0 -6 5 -7 6 -1 c1 6 6 8 5 15 c-1 6 -8 10 -15 8z" fill="#ffe6b0" opacity=".8"/>
+                <path d="M170 244 c-8 -4 -9 -16 -3 -23 c2 7 7 7 7 1 c0 -6 5 -7 6 -1 c1 6 6 8 5 15 c-1 6 -8 10 -15 8z" fill="#ffe6b0" opacity=".8"/>
+              </g>
+
+              <!-- 釉色瓷瓶 -->
+              <g transform="translate(214,196)"><g class="jar-wrap" id="jarWrap">
+                <ellipse cx="0" cy="34" rx="20" ry="4" fill="#2a567f" opacity=".12"/>
+                <path class="body" d="M-6 -46 h12 v12 c0 7 9 10 11 18 c3 12 3 26 0 34 c-2 7 -9 10 -17 10 c-8 0 -15 -3 -17 -10 c-3 -8 -3 -22 0 -34 c2 -8 11 -11 11 -18 z"
+                      fill="url(#glaze)" stroke="#6d1a17" stroke-width=".8"/>
+                <path d="M-12 -8 c1 14 3 24 6 30" fill="none" stroke="#ffffff" stroke-width="2" opacity=".28" stroke-linecap="round"/>
+                <ellipse cx="0" cy="-46" rx="6" ry="2.2" fill="#f7efe4" opacity=".85"/>
+              </g></g>
+
+              <path d="M0 250 H300" stroke="#c3b5a0" stroke-width="1.4"/>
+              <path d="M0 256 Q60 250 120 256 T300 254 L300 280 L0 280 Z" fill="#e7dfd0"/>
+            </svg>
+          </div>
+
+          <p class="copy reveal" style="--d:.2s">铜红最难烧，火候差一分，颜色便换一生。</p>
+          <div class="btn-row reveal" style="--d:.26s">
+            <button class="btn btn-solid" id="fireBtn">再添一把火</button>
+            <span class="color-chip">釉色 <span id="chip"></span><span id="chipName">祭红</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 07 四大名瓷 ========== -->
+      <section class="page page--p7">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第六章 · 四绝</div>
+          <h2 class="title reveal" style="--d:.08s">四大<em>名瓷</em></h2>
+
+          <div class="art reveal" style="--d:.14s">
+            <svg width="300" height="230" viewBox="0 0 300 230" preserveAspectRatio="xMidYMid meet" id="p7svg" aria-label="四大名瓷">
+              <defs>
+                <linearGradient id="p7a" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2ebe6"/>
+                </linearGradient>
+                <linearGradient id="p7d" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#b8402f"/><stop offset=".6" stop-color="#8a1f1c"/>
+                  <stop offset="1" stop-color="#5b1214"/>
+                </linearGradient>
+                <g id="miniVase">
+                  <path d="M-10 -96 C-10 -96 -14 -82 -20 -74 C-30 -62 -32 -38 -26 -22 C-22 -10 -12 -2 0 -2 C12 -2 22 -10 26 -22 C32 -38 30 -62 20 -74 C14 -82 10 -96 10 -96 Z"/>
+                </g>
+              </defs>
+
+              <path d="M20 200 H280" stroke="#c9d8d2" stroke-width="1"/>
+
+              <g transform="translate(52,198) scale(.92)"><g class="vase-item on" data-v="0">
+                <use href="#miniVase" fill="url(#p7a)" stroke="#2e5f8a" stroke-width="1.1"/>
+                <ellipse cx="0" cy="-96" rx="10" ry="3" fill="#f2f7f4" stroke="#2e5f8a" stroke-width=".9"/>
+                <g stroke="#2e5f8a" fill="none" opacity=".75">
+                  <path d="M-26 -62 H26" stroke-width=".9"/>
+                  <path d="M-24 -24 q6 -6 12 0 t12 0 t12 0" stroke-width="1"/>
+                  <path d="M0 -46 c-8 -10 0 -18 0 -18 c0 0 8 8 0 18z" stroke-width="1.2"/>
+                  <path d="M-14 -52 c-6 -4 -7 -11 -3 -14" stroke-width=".9"/>
+                  <path d="M14 -52 c6 -4 7 -11 3 -14" stroke-width=".9"/>
+                </g>
+                <path d="M-14 -70 c-1 22 0 40 3 52" fill="none" stroke="#ffffff" stroke-width="1.8" opacity=".6"/>
+              </g></g>
+
+              <g transform="translate(118,198) scale(.88)"><g class="vase-item dim" data-v="1">
+                <use href="#miniVase" fill="#fdfcf8" stroke="#8aa8a0" stroke-width="1.1"/>
+                <ellipse cx="0" cy="-96" rx="9" ry="2.8" fill="#f2f7f4" stroke="#8aa8a0" stroke-width=".9"/>
+                <g fill="#cfe1e4" stroke="#8fb2b8" stroke-width=".6" opacity=".95">
+                  <circle cx="-12" cy="-52" r="3"/><circle cx="0" cy="-46" r="3"/><circle cx="12" cy="-52" r="3"/>
+                  <circle cx="-6" cy="-34" r="2.6"/><circle cx="7" cy="-34" r="2.6"/>
+                  <circle cx="-13" cy="-58" r="2.2"/><circle cx="13" cy="-58" r="2.2"/>
+                  <circle cx="0" cy="-22" r="3"/>
+                </g>
+                <g stroke="#8fb2b8" fill="none" opacity=".55">
+                  <path d="M-22 -64 q22 -8 44 0" stroke-width=".8"/>
+                  <path d="M-20 -16 q20 6 40 0" stroke-width=".8"/>
+                </g>
+              </g></g>
+
+              <g transform="translate(186,198) scale(.9)"><g class="vase-item dim" data-v="2">
+                <use href="#miniVase" fill="#fdf8ec" stroke="#c9a15f" stroke-width="1.1"/>
+                <ellipse cx="0" cy="-96" rx="9.5" ry="2.9" fill="#f7efdd" stroke="#c9a15f" stroke-width=".9"/>
+                <g>
+                  <path d="M0 -50 c-7 -9 -12 -4 -10 2 c2 5 8 5 10 -2 c2 7 8 7 10 2 c2 -6 -3 -11 -10 -2z" fill="#d98b93"/>
+                  <path d="M-14 -34 c-6 -6 -10 -2 -8 2 c2 4 6 3 8 -2 c2 5 6 6 8 2 c2 -4 -2 -8 -8 -2z" fill="#e3a3a6"/>
+                  <path d="M14 -40 c-6 -6 -10 -2 -8 2 c2 4 6 3 8 -2 c2 5 6 6 8 2 c2 -4 -2 -8 -8 -2z" fill="#d98b93"/>
+                  <g stroke="#8aa87a" stroke-width="1.2" fill="none" stroke-linecap="round">
+                    <path d="M-7 -44 q-6 -8 -12 -8"/><path d="M7 -44 q6 -8 12 -8"/>
+                    <path d="M-4 -28 q-5 6 -1 12"/><path d="M4 -28 q5 6 1 12"/>
+                  </g>
+                </g>
+                <g stroke="#c2a15a" stroke-width=".8" fill="none" opacity=".8">
+                  <path d="M-24 -64 q24 -9 48 0"/><path d="M-24 -14 q24 8 48 0"/>
+                </g>
+              </g></g>
+
+              <g transform="translate(252,198) scale(.9)"><g class="vase-item dim" data-v="3">
+                <use href="#miniVase" fill="url(#p7d)" stroke="#5b1214" stroke-width="1.1"/>
+                <ellipse cx="0" cy="-96" rx="9.5" ry="2.9" fill="#f0d9cd" opacity=".8"/>
+                <path d="M-14 -66 c-2 20 -1 36 2 48" fill="none" stroke="#ffffff" stroke-width="2.4" opacity=".22" stroke-linecap="round"/>
+                <path d="M8 -70 c2 18 2 34 0 46" fill="none" stroke="#ffffff" stroke-width="1.2" opacity=".12" stroke-linecap="round"/>
+              </g></g>
+            </svg>
+          </div>
+
+          <div class="tabs reveal" style="--d:.2s" id="tabs">
+            <button class="on" data-tab="0">青花</button>
+            <button data-tab="1">玲珑</button>
+            <button data-tab="2">粉彩</button>
+            <button data-tab="3">颜色釉</button>
+          </div>
+
+          <p class="p7-desc reveal" style="--d:.26s" id="p7desc">青花：钴料绘坯，罩釉一次烧成，蓝白相生。</p>
+        </div>
+      </section>
+
+      <!-- ========== 08 七十二道手 ========== -->
+      <section class="page page--p8">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第七章 · 工序</div>
+          <h2 class="title reveal" style="--d:.08s">七十二道<em>手</em></h2>
+          <p class="copy reveal" style="--d:.14s">从采石到装窑，七十二道工序，一道不可省。</p>
+
+          <div class="art reveal" style="--d:.2s;flex:0 0 auto;min-height:96px">
+            <svg width="300" height="96" viewBox="0 0 300 96" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+              <path d="M8 84 H292" stroke="#c9d8d2" stroke-width="1"/>
+              <path d="M8 78 H292" stroke="#dfe9e4" stroke-width=".7"/>
+              <g fill="#2a567f" opacity=".82">
+                <path d="M26 84 V66 H44 L52 58 L60 66 H78 V84 Z"/>
+                <path d="M88 84 V70 H104 L112 62 L120 70 H138 V84 Z"/>
+                <path d="M150 84 V64 H166 V54 h6 v10 h8 V84 Z"/>
+                <path d="M188 84 V72 H206 L214 64 L222 72 H240 V84 Z"/>
+                <path d="M250 84 V68 H268 L276 60 L284 68 H292 V84 Z"/>
+              </g>
+              <g class="kiln-fire" fill="#c2a15a" opacity=".85">
+                <path d="M176 84 c-5 -3 -6 -10 -2 -14 c1 4 4 4 4 1 c0 -4 3 -4 4 -1 c1 4 4 5 3 9 c-1 4 -5 6 -9 5z"/>
+              </g>
+              <g stroke="#9fbdb6" stroke-width="1.4" fill="none" opacity=".5" stroke-linecap="round">
+                <path d="M170 50 c-3 -8 4 -10 1 -16"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="stage-scroll reveal" style="--d:.26s" id="stageScroll">
+            <button class="stage-card on" data-stage="0"><b>采石</b><i>× 5</i></button>
+            <button class="stage-card" data-stage="1"><b>制泥</b><i>× 7</i></button>
+            <button class="stage-card" data-stage="2"><b>拉坯</b><i>× 12</i></button>
+            <button class="stage-card" data-stage="3"><b>利坯</b><i>× 9</i></button>
+            <button class="stage-card" data-stage="4"><b>施釉</b><i>× 6</i></button>
+            <button class="stage-card" data-stage="5"><b>绘瓷</b><i>× 15</i></button>
+            <button class="stage-card" data-stage="6"><b>装匣</b><i>× 8</i></button>
+            <button class="stage-card" data-stage="7"><b>烧成</b><i>× 10</i></button>
+          </div>
+
+          <div class="stage-detail reveal" style="--d:.32s">
+            <b id="stageNum">5</b>
+            <span>道工序<small id="stageName">采石 · 取高岭土</small></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 09 匠人 ========== -->
+      <section class="page page--p9">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">第八章 · 人</div>
+          <h2 class="title reveal" style="--d:.08s">窑火<em>不熄</em></h2>
+
+          <div class="art reveal" style="--d:.14s">
+            <div class="p9-scene" id="p9scene">
+              <svg width="300" height="300" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet" aria-label="守窑的匠人">
+                <defs>
+                  <radialGradient id="kilnGlow" cx=".5" cy=".55" r=".5">
+                    <stop offset="0" stop-color="#f2a751" stop-opacity=".9"/>
+                    <stop offset=".55" stop-color="#e0762f" stop-opacity=".35"/>
+                    <stop offset="1" stop-color="#e0762f" stop-opacity="0"/>
+                  </radialGradient>
+                  <linearGradient id="bowl9" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe7e2"/>
+                  </linearGradient>
+                </defs>
+
+                <ellipse class="glow" cx="96" cy="190" rx="120" ry="104" fill="url(#kilnGlow)" opacity="0"/>
+                <circle cx="150" cy="142" r="106" fill="none" stroke="#c9d8d2" stroke-width=".8" opacity=".5"/>
+                <path d="M14 246 H286" stroke="#c9d8d2" stroke-width="1" opacity=".6"/>
+                <circle cx="248" cy="66" r="17" fill="#f8f4e6" stroke="#e2dac6" stroke-width=".7"/>
+
+                <!-- 柴窑 -->
+                <g>
+                  <path d="M26 246 V186 a66 66 0 0 1 132 0 V246 Z" fill="#cdbca7" stroke="#b3a08a" stroke-width="1.1"/>
+                  <g stroke="#b8a690" stroke-width=".7" opacity=".65" fill="none">
+                    <path d="M26 208 H158"/><path d="M26 228 H158"/>
+                    <path d="M56 190 V246"/><path d="M92 184 V246"/><path d="M128 190 V246"/>
+                  </g>
+                  <path d="M56 246 V204 a36 36 0 0 1 72 0 V246 Z" fill="#8f6b52"/>
+                  <path d="M62 246 V206 a30 30 0 0 1 60 0 V246 Z" fill="#e8b877"/>
+                  <g class="kiln-fire" fill="#f6c46e" opacity=".9">
+                    <path d="M96 244 c-10 -5 -12 -17 -6 -25 c2 7 7 7 7 1 c0 -7 6 -8 7 -2 c1 6 8 8 7 16 c-1 7 -8 11 -15 10z"/>
+                    <path d="M74 244 c-6 -3 -7 -11 -2 -16 c1 5 5 5 5 1 c0 -4 3 -5 4 -1 c1 4 4 6 3 10 c-1 5 -5 7 -10 6z" opacity=".75"/>
+                    <path d="M120 244 c-6 -3 -7 -11 -2 -16 c1 5 5 5 5 1 c0 -4 3 -5 4 -1 c1 4 4 6 3 10 c-1 5 -5 7 -10 6z" opacity=".75"/>
+                  </g>
+                  <path d="M92 152 c-3 -10 4 -12 2 -20" fill="none" stroke="#b6c8c0" stroke-width="1.6" opacity=".5" stroke-linecap="round"/>
+                </g>
+
+                <!-- 守窑人 -->
+                <g fill="#33505f">
+                  <circle cx="212" cy="176" r="14"/>
+                  <path d="M196 246 c0 -26 7 -44 16 -52 c9 8 16 26 16 52 z"/>
+                  <path d="M188 246 q24 -16 48 0 z"/>
+                  <path d="M203 208 c-8 6 -12 16 -12 26 l6 2 c0 -10 3 -19 8 -24 z"/>
+                </g>
+                <path d="M203 190 c0 -8 5 -14 9 -14 c4 0 9 6 9 14" fill="none" stroke="#c2a15a" stroke-width="1.3" opacity=".6"/>
+                <!-- 手中茶盏 -->
+                <ellipse cx="219" cy="216" rx="12" ry="4" fill="url(#bowl9)"/>
+                <path d="M207 216 c0 8 5 13 12 13 c7 0 12 -5 12 -13 z" fill="url(#bowl9)" stroke="#a9c3bc" stroke-width=".8"/>
+                <path d="M212 222 c4 3 10 3 14 0" fill="none" stroke="#2e5f8a" stroke-width=".9" opacity=".5"/>
+                <path d="M221 208 c1 -4 4 -5 6 -4" fill="none" stroke="#b6c8c0" stroke-width="1.4" opacity=".55" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <p class="copy reveal" style="--d:.2s">年轻的手接过老的窑火，瓷器才有下一百年。</p>
+
+          <div class="switch-row reveal" style="--d:.26s">
+            <span id="switchLabel">入夜，把窑火点亮</span>
+            <label class="switch">
+              <input type="checkbox" id="duskToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 10 尾页 ========== -->
+      <section class="page page--end">
+        <div class="page-inner">
+          <div class="kicker reveal" style="--d:.02s">尾声 · 昌南</div>
+
+          <div class="end-art art reveal" style="--d:.08s">
+            <svg width="300" height="200" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet" aria-label="三件瓷器">
+              <defs>
+                <linearGradient id="e1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dde8e3"/>
+                </linearGradient>
+                <linearGradient id="e3" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#c05a45"/><stop offset="1" stop-color="#7d1c1a"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="150" cy="176" rx="118" ry="8" fill="#2a567f" opacity=".08"/>
+              <g transform="translate(92,170) scale(.82)">
+                <path d="M-10 -96 C-10 -96 -14 -82 -20 -74 C-30 -62 -32 -38 -26 -22 C-22 -10 -12 -2 0 -2 C12 -2 22 -10 26 -22 C32 -38 30 -62 20 -74 C14 -82 10 -96 10 -96 Z"
+                      fill="url(#e1)" stroke="#2e5f8a" stroke-width="1.2"/>
+                <g stroke="#2e5f8a" fill="none" opacity=".6">
+                  <path d="M-26 -64 H26" stroke-width=".9"/>
+                  <path d="M-22 -28 q6 -6 12 0 t12 0 t12 0" stroke-width="1"/>
+                  <circle cx="0" cy="-44" r="7" stroke-width="1"/>
+                </g>
+              </g>
+              <g transform="translate(150,172) scale(1.02)">
+                <path d="M-10 -96 C-10 -96 -14 -82 -20 -74 C-30 -62 -32 -38 -26 -22 C-22 -10 -12 -2 0 -2 C12 -2 22 -10 26 -22 C32 -38 30 -62 20 -74 C14 -82 10 -96 10 -96 Z"
+                      fill="url(#e1)" stroke="#2e5f8a" stroke-width="1.2"/>
+                <g stroke="#2e5f8a" fill="none" opacity=".55">
+                  <path d="M-26 -60 H26" stroke-width=".9"/>
+                  <path d="M-30 -30 q7 -5 14 0 t14 0 t14 0" stroke-width=".9"/>
+                </g>
+                <path d="M0 -50 c-7 -9 -12 -4 -10 2 c2 5 8 5 10 -2 c2 7 8 7 10 2 c2 -6 -3 -11 -10 -2z" fill="#2e5f8a" opacity=".55"/>
+              </g>
+              <g transform="translate(210,170) scale(.86)">
+                <path d="M-10 -96 C-10 -96 -14 -82 -20 -74 C-30 -62 -32 -38 -26 -22 C-22 -10 -12 -2 0 -2 C12 -2 22 -10 26 -22 C32 -38 30 -62 20 -74 C14 -82 10 -96 10 -96 Z"
+                      fill="url(#e3)" stroke="#5b1214" stroke-width="1.1"/>
+                <path d="M-14 -70 c-2 22 -1 38 2 50" fill="none" stroke="#ffffff" stroke-width="2" opacity=".2" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+
+          <h2 class="title end-title reveal" style="--d:.14s">一瓷一世界</h2>
+          <p class="copy end-copy reveal" style="--d:.2s">来景德镇，看泥成器，看火成诗。</p>
+
+          <div class="end-actions reveal" style="--d:.26s">
+            <button class="btn btn-solid" id="homeBtn">返回首页</button>
+            <button class="btn btn-ghost" id="againBtn">再看一遍</button>
+          </div>
+
+          <div class="footer-note reveal" style="--d:.32s">景 德 镇 · 千 年 瓷 都</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <nav class="navbar" id="navbar">
+    <button class="nav-btn" id="prevBtn" aria-label="上一页">‹</button>
+    <div class="dots" id="dots"></div>
+    <button class="nav-btn" id="nextBtn" aria-label="下一页">›</button>
+  </nav>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
