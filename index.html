@@ -125,18 +125,20 @@
 
           <div class="film reveal" style="--d:.14s">
             <div class="film-frame" id="filmFrame">
-              <video id="filmVideo" src="media/film.mp4" poster="media/film-poster.jpg"
-                     preload="metadata" playsinline webkit-playsinline muted loop></video>
-              <button class="film-play" id="filmPlay" type="button" aria-label="播放或暂停">
-                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-                  <path class="icon-play" d="M8.5 5.5 v13 l11 -6.5 z" fill="currentColor"/>
-                  <g class="icon-pause">
-                    <rect x="7" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/>
-                    <rect x="13.6" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/>
-                  </g>
-                </svg>
-              </button>
-              <span class="film-tag">影像 · 景德镇</span>
+              <div class="film-screen">
+                <video id="filmVideo" src="media/film.mp4" poster="media/film-poster.jpg"
+                       preload="metadata" playsinline webkit-playsinline muted loop></video>
+                <button class="film-play" id="filmPlay" type="button" aria-label="播放或暂停">
+                  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                    <path class="icon-play" d="M8.5 5.5 v13 l11 -6.5 z" fill="currentColor"/>
+                    <g class="icon-pause">
+                      <rect x="7" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/>
+                      <rect x="13.6" y="5.5" width="3.4" height="13" rx="1.2" fill="currentColor"/>
+                    </g>
+                  </svg>
+                </button>
+                <span class="film-tag">影像 · 景德镇</span>
+              </div>
             </div>
             <div class="film-bar">
               <button class="film-chip" id="filmMute" type="button">开启声音</button>
@@ -149,6 +151,7 @@
 
           <p class="copy reveal" style="--d:.2s">水与泥的相逢，在光影里徐徐展开。</p>
           <div class="hint reveal" style="--d:.26s"><i></i>轻触画面播放 · 左右滑动翻页</div>
+          <div class="film-foot reveal" style="--d:.32s"><span></span>昌南映像<span></span></div>
         </div>
       </section>
 
