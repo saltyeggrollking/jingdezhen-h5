@@ -539,12 +539,25 @@ body {
   color: var(--ink-3);
   white-space: nowrap;
 }
-.color-chip span {
+/* 圆点只作用于色块 #chip；釉色名称为普通文字，排在圆点右侧 */
+.color-chip #chip {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   background: var(--chip, #b03a2e);
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.7);
+  flex: 0 0 auto;
+}
+.color-chip #chipName {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 12px;
+  font-family: var(--serif);
+  letter-spacing: 0.2em;
+  color: var(--ink-2);
 }
 
 /* ---------- P7 四大名瓷 ---------- */
