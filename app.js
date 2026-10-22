@@ -568,6 +568,9 @@
   /* ---------- 初始化 ---------- */
   go(0, true);
 
+  /* 初始化：若直接落在影片页或附近，立即开始整片预取 */
+  if (film && filmIndex > -1 && index >= filmIndex - 1) filmStartPrefetch();
+
   /* 调试直达：?p=页码 */
   var pm = new URLSearchParams(location.search).get('p');
   if (pm) go(Math.max(0, Math.min(total - 1, parseInt(pm, 10) - 1)), true);
