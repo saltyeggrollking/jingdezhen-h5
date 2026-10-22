@@ -48,6 +48,7 @@
         try { film.load(); } catch (err) {}
       }
       filmStartPrefetch();
+      filmPump();
     }
     /* 页9场景在滑动进入时同步昼夜状态 */
     if (pages[index].classList.contains('page--p9')) {
@@ -423,8 +424,14 @@
     film.preload = 'auto';
   }
 
-  /* ---------- 整片预取：多连接并行下载到内存，彻底消除播放中途断流 ---------- */
-  var filmBlobURL = null, filmPrefetching = false;
+  /* ---------- 整片预取：分片队列 + 动态并发 ----------
+     原则：正在影片页播放时预取只走 1 路，把带宽让给播放器（解决开头久缓冲）；
+     没在播放（浏览其他页）或播放断流等待时，恢复 6 路全速拉完整片。
+     全部就绪后换成本地 Blob 播放，之后不再依赖网络。 */
+  var filmBlobURL = null, filmPrefetching = false, filmBoost = false;
+  var filmSrc = null, filmSize = 0, filmChunk = 0, filmN = 6;
+  var filmParts = null, filmGot = 0, filmDone = 0;
+  var filmQueue = [], filmInflight = 0;
 
   function filmSetHint(text, on) {
     if (!filmLoading) return;
@@ -432,63 +439,106 @@
     filmLoading.classList.toggle('on', !!on);
   }
 
+  function filmMaxConn() {
+    if (filmBoost) return 6;
+    if (film && index === filmIndex && !film.paused && !film.ended) return 1;
+    return 6;
+  }
+
+  function filmPump() {
+    if (!filmPrefetching || filmBlobURL) return;
+    while (filmInflight < filmMaxConn() && filmQueue.length) {
+      var i = filmQueue.shift();
+      filmInflight++;
+      filmGrab(i, 1);
+    }
+  }
+
+  function filmGrab(i, attempt) {
+    var from = i * filmChunk, to = Math.min(filmSize, from + filmChunk) - 1;
+    if (from > to) { filmParts[i] = new ArrayBuffer(0); filmDone++; filmInflight--; filmPump(); return; }
+    fetch(filmSrc, { headers: { Range: 'bytes=' + from + '-' + to } }).then(function (r) {
+      if (!r.ok && r.status !== 206) throw new Error('http ' + r.status);
+      return r.arrayBuffer();
+    }).then(function (buf) {
+      if (!buf || buf.byteLength !== (to - from + 1)) throw new Error('short');
+      filmGot += buf.byteLength;
+      filmParts[i] = buf;
+      filmDone++;
+      filmInflight--;
+      filmSetHint('缓冲中 ' + Math.min(99, Math.round(filmGot / filmSize * 100)) + '%', true);
+      if (filmDone >= filmN) filmAssemble();
+      else filmPump();
+    }).catch(function () {
+      filmInflight--;
+      /* 分片断流：最多重试 4 次，避免一处失败导致整片退回边下边播 */
+      if (attempt >= 4) {
+        filmPrefetching = false;
+        filmSetHint('缓冲中…', false);
+        return;
+      }
+      filmQueue.unshift(i);
+      filmPump();
+    });
+  }
+
+  function filmAssemble() {
+    filmPrefetching = false;
+    var blob = new Blob(filmParts, { type: 'video/mp4' });
+    if (!blob.size) return;
+    filmBlobURL = URL.createObjectURL(blob);
+    var at = film.currentTime, playing = !film.paused && !film.ended;
+    film.src = filmBlobURL;
+    film.load();
+    film.addEventListener('loadedmetadata', function once() {
+      film.removeEventListener('loadedmetadata', once);
+      if (at > 0) { try { film.currentTime = at; } catch (err) {} }
+      if (playing) { var pp = film.play(); if (pp && pp.catch) pp.catch(function () {}); }
+      filmUI();
+    });
+    filmSetHint('缓冲中…', false);
+  }
+
   function filmStartPrefetch() {
     if (!film || filmPrefetching || filmBlobURL) return;
-    var src = film.getAttribute('src');
-    if (!src || typeof fetch === 'undefined' || !window.Response || !Response.prototype.arrayBuffer) return;
+    filmSrc = film.getAttribute('src');
+    if (!filmSrc || typeof fetch === 'undefined' || !window.Response || !Response.prototype.arrayBuffer) return;
     filmPrefetching = true;
 
-    fetch(src, { method: 'HEAD' }).then(function (h) {
-      var size = +(h.headers.get('content-length') || 0);
-      if (!(size > 0)) return fetch(src).then(function (r) { return r.blob(); });
-
-      /* 6 路并行 Range 下载：单连接常被中途掐断，多连接能稳定拉完整片 */
-      var N = 6, chunk = Math.ceil(size / N), parts = new Array(N), got = 0;
-
-      function grab(i, from, to, attempt) {
-        if (from > to) { parts[i] = new ArrayBuffer(0); return Promise.resolve(); }
-        return fetch(src, { headers: { Range: 'bytes=' + from + '-' + to } }).then(function (r) {
-          if (!r.ok && r.status !== 206) throw new Error('http ' + r.status);
-          return r.arrayBuffer();
-        }).then(function (buf) {
-          if (!buf || buf.byteLength !== (to - from + 1)) throw new Error('short');
-          got += buf.byteLength;
-          filmSetHint('缓冲中 ' + Math.min(99, Math.round(got / size * 100)) + '%', true);
-          parts[i] = buf;
-        }).catch(function () {
-          /* 分片断流：最多重试 4 次，避免一处失败导致整片退回边下边播 */
-          if (attempt >= 4) throw new Error('chunk fail');
-          return grab(i, from, to, attempt + 1);
+    fetch(filmSrc, { method: 'HEAD' }).then(function (h) {
+      filmSize = +(h.headers.get('content-length') || 0);
+      if (!(filmSize > 0)) {
+        /* 拿不到大小就整片单流下载（不参与并发调度） */
+        return fetch(filmSrc).then(function (r) { return r.blob(); }).then(function (b) {
+          filmParts = [b]; filmDone = filmN = 1; filmAssemble2(b);
         });
       }
-
-      var jobs = [];
-      for (var i = 0; i < N; i++) {
-        var from = i * chunk, to = Math.min(size, from + chunk) - 1;
-        jobs.push(grab(i, from, to, 1));
-      }
-      return Promise.all(jobs).then(function () {
-        return new Blob(parts, { type: 'video/mp4' });
-      });
-    }).then(function (blob) {
-      if (!blob || !blob.size) throw new Error('empty');
-      filmBlobURL = URL.createObjectURL(blob);
-      var at = film.currentTime, playing = !film.paused && !film.ended;
-      film.src = filmBlobURL;
-      film.load();
-      film.addEventListener('loadedmetadata', function once() {
-        film.removeEventListener('loadedmetadata', once);
-        if (at > 0) { try { film.currentTime = at; } catch (err) {} }
-        if (playing) { var pp = film.play(); if (pp && pp.catch) pp.catch(function () {}); }
-        filmUI();
-      });
-      filmSetHint('缓冲中…', false);
-      filmPrefetching = false;
+      filmChunk = Math.ceil(filmSize / filmN);
+      filmParts = new Array(filmN);
+      filmGot = 0; filmDone = 0; filmInflight = 0;
+      filmQueue = [];
+      for (var i = 0; i < filmN; i++) filmQueue.push(i);
+      filmPump();
     }).catch(function () {
       /* 预取失败：保持原来的边下边播 */
       filmPrefetching = false;
       filmSetHint('缓冲中…', false);
     });
+  }
+
+  function filmAssemble2(blob) {
+    filmPrefetching = false;
+    filmBlobURL = URL.createObjectURL(blob);
+    var at = film.currentTime, playing = !film.paused && !film.ended;
+    film.src = filmBlobURL;
+    film.load();
+    film.addEventListener('loadedmetadata', function once() {
+      film.removeEventListener('loadedmetadata', once);
+      if (at > 0) { try { film.currentTime = at; } catch (err) {} }
+      if (playing) { var pp = film.play(); if (pp && pp.catch) pp.catch(function () {}); }
+      filmUI();
+    });
+    filmSetHint('缓冲中…', false);
   }
 
   function fPad(n) { return (n < 10 ? '0' : '') + n; }
@@ -541,15 +591,26 @@
     film.addEventListener('waiting', function () {
       if (filmBlobURL) { filmBufferHint(false); return; }
       filmSetHint('缓冲中…', true);
+      /* 流断流等待：临时全速预取，让 Blob 尽快就绪接管播放 */
+      filmBoost = true;
+      filmPump();
     });
-    film.addEventListener('playing', function () { if (!filmPrefetching) filmBufferHint(false); });
-    film.addEventListener('canplay', function () { if (!filmPrefetching) filmBufferHint(false); });
+    film.addEventListener('playing', function () {
+      filmBoost = false;
+      filmPump();
+      if (!filmPrefetching) filmBufferHint(false);
+    });
+    film.addEventListener('canplay', function () {
+      filmBoost = false;
+      filmPump();
+      if (!filmPrefetching) filmBufferHint(false);
+    });
     film.addEventListener('loadeddata', function () { if (!filmPrefetching) filmBufferHint(false); });
     film.addEventListener('loadedmetadata', filmUI);
     film.addEventListener('timeupdate', filmUI);
-    film.addEventListener('play', filmUI);
-    film.addEventListener('pause', filmUI);
-    film.addEventListener('ended', filmUI);
+    film.addEventListener('play', function () { filmUI(); filmPump(); });
+    film.addEventListener('pause', function () { filmUI(); filmPump(); });
+    film.addEventListener('ended', function () { filmUI(); filmPump(); });
     filmPlay.addEventListener('click', function (e) {
       e.stopPropagation();
       filmToggle();
