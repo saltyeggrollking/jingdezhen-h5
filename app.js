@@ -417,11 +417,44 @@
   var filmTrack = document.getElementById('filmTrack');
   var filmTime = document.getElementById('filmTime');
 
-  /* 按屏幕选流：手机等窄屏用 720P（体积与码率约减半，小屏画质无差），大屏用 1080P */
+  /* 按屏幕选流：手机等窄屏用 720P（体积与码率约减半，小屏画质无差），大屏用 1080P。
+     源线路优先级：gcore CDN（国内可达、实测最快）→ testingcf CDN → 本站 github.io（兜底）。
+     当前线路彻底失败时自动切换到下一条，进度与播放状态保留。 */
+  var filmFile = null, filmBaseIdx = 0, filmRun = 0;
+  var filmBases = [
+    'https://gcore.jsdelivr.net/gh/saltyeggrollking/jingdezhen-h5@main/',
+    'https://testingcf.jsdelivr.net/gh/saltyeggrollking/jingdezhen-h5@main/',
+    ''
+  ];
+  var filmBase = filmBases[0];
   if (film) {
     var narrowScreen = Math.min(window.innerWidth || 9999, (window.screen && screen.width) || 9999) <= 640;
-    film.src = narrowScreen ? 'media/film-720.mp4' : 'media/film.mp4';
+    filmFile = narrowScreen ? 'media/film-720.mp4' : 'media/film.mp4';
+    film.src = filmBase + filmFile;
     film.preload = 'auto';
+  }
+
+  /* 当前源不可用（CDN 被墙/断流）时切换到下一条线路并重启预取 */
+  function filmNextSource() {
+    if (!film || !filmFile || filmBlobURL) return false;
+    if (filmBaseIdx >= filmBases.length - 1) return false;
+    filmRun++;              /* 作废所有在途分片请求，避免新旧源数据混拼 */
+    filmBaseIdx++;
+    filmBase = filmBases[filmBaseIdx];
+    filmPrefetching = false;
+    filmQueue = []; filmInflight = 0; filmGot = 0; filmDone = 0;
+    filmSetHint('切换线路…', true);
+    var at = film.currentTime, playing = !film.paused && !film.ended;
+    film.src = filmBase + filmFile;
+    film.load();
+    film.addEventListener('loadedmetadata', function once() {
+      film.removeEventListener('loadedmetadata', once);
+      if (at > 0) { try { film.currentTime = at; } catch (err) {} }
+      if (playing) { var pp = film.play(); if (pp && pp.catch) pp.catch(function () {}); }
+      filmUI();
+      setTimeout(filmStartPrefetch, 300);
+    });
+    return true;
   }
 
   /* ---------- 整片预取：分片队列 + 动态并发 ----------
@@ -455,12 +488,14 @@
   }
 
   function filmGrab(i, attempt) {
+    var run = filmRun;
     var from = i * filmChunk, to = Math.min(filmSize, from + filmChunk) - 1;
     if (from > to) { filmParts[i] = new ArrayBuffer(0); filmDone++; filmInflight--; filmPump(); return; }
     fetch(filmSrc, { headers: { Range: 'bytes=' + from + '-' + to } }).then(function (r) {
       if (!r.ok && r.status !== 206) throw new Error('http ' + r.status);
       return r.arrayBuffer();
     }).then(function (buf) {
+      if (run !== filmRun) return;   /* 换源后旧响应直接丢弃 */
       if (!buf || buf.byteLength !== (to - from + 1)) throw new Error('short');
       filmGot += buf.byteLength;
       filmParts[i] = buf;
@@ -470,11 +505,12 @@
       if (filmDone >= filmN) filmAssemble();
       else filmPump();
     }).catch(function () {
+      if (run !== filmRun) return;
       filmInflight--;
-      /* 分片断流：最多重试 4 次，避免一处失败导致整片退回边下边播 */
+      /* 分片断流：最多重试 4 次，仍失败则整条线路换掉 */
       if (attempt >= 4) {
         filmPrefetching = false;
-        filmSetHint('缓冲中…', false);
+        if (!filmNextSource()) filmSetHint('缓冲中…', false);
         return;
       }
       filmQueue.unshift(i);
@@ -501,15 +537,19 @@
 
   function filmStartPrefetch() {
     if (!film || filmPrefetching || filmBlobURL) return;
-    filmSrc = film.getAttribute('src');
+    filmSrc = filmFile ? (filmBase + filmFile) : film.getAttribute('src');
     if (!filmSrc || typeof fetch === 'undefined' || !window.Response || !Response.prototype.arrayBuffer) return;
     filmPrefetching = true;
+    var run = filmRun;
 
     fetch(filmSrc, { method: 'HEAD' }).then(function (h) {
+      if (run !== filmRun) return;
+      if (!h.ok) throw new Error('http ' + h.status);
       filmSize = +(h.headers.get('content-length') || 0);
       if (!(filmSize > 0)) {
         /* 拿不到大小就整片单流下载（不参与并发调度） */
         return fetch(filmSrc).then(function (r) { return r.blob(); }).then(function (b) {
+          if (run !== filmRun) return;
           filmParts = [b]; filmDone = filmN = 1; filmAssemble2(b);
         });
       }
@@ -520,9 +560,10 @@
       for (var i = 0; i < filmN; i++) filmQueue.push(i);
       filmPump();
     }).catch(function () {
-      /* 预取失败：保持原来的边下边播 */
+      if (run !== filmRun) return;
+      /* HEAD 失败：换下一条线路再试，没有线路了就退回边下边播 */
       filmPrefetching = false;
-      filmSetHint('缓冲中…', false);
+      if (!filmNextSource()) filmSetHint('缓冲中…', false);
     });
   }
 
@@ -588,6 +629,10 @@
     function filmBufferHint(on) {
       if (filmLoading) filmLoading.classList.toggle('on', !!on);
     }
+    film.addEventListener('error', function () {
+      /* 当前线路加载失败（CDN 被墙等）：自动换下一条线路 */
+      if (!filmBlobURL && filmFile) filmNextSource();
+    });
     film.addEventListener('waiting', function () {
       if (filmBlobURL) { filmBufferHint(false); return; }
       filmSetHint('缓冲中…', true);
