@@ -6,6 +6,8 @@
   var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
   var total = pages.length;
   var index = 0;
+  var filmIndex = -1;
+  pages.forEach(function (p, k) { if (p.classList.contains('page--film')) filmIndex = k; });
 
   var curEl = document.getElementById('cur');
   var prevBtn = document.getElementById('prevBtn');
@@ -39,6 +41,11 @@
     prevBtn.disabled = index === 0;
     nextBtn.disabled = index === total - 1;
     bar.style.width = ((index + 1) / total * 100) + '%';
+    /* 提前一页开始缓冲影片，滑到影片页时即可瞬时开播 */
+    if (film && filmIndex > -1 && index >= filmIndex - 1 && film.preload !== 'auto') {
+      film.preload = 'auto';
+      try { film.load(); } catch (err) {}
+    }
     /* 页9场景在滑动进入时同步昼夜状态 */
     if (pages[index].classList.contains('page--p9')) {
       document.getElementById('p9scene').classList.toggle('dusk', document.getElementById('duskToggle').checked);
@@ -406,6 +413,13 @@
   var filmTrack = document.getElementById('filmTrack');
   var filmTime = document.getElementById('filmTime');
 
+  /* 按屏幕选流：手机等窄屏用 720P（体积与码率约减半，小屏画质无差），大屏用 1080P */
+  if (film) {
+    var narrowScreen = Math.min(window.innerWidth || 9999, (window.screen && screen.width) || 9999) <= 640;
+    film.src = narrowScreen ? 'media/film-720.mp4' : 'media/film.mp4';
+    film.preload = 'auto';
+  }
+
   function fPad(n) { return (n < 10 ? '0' : '') + n; }
   function fFmt(t) {
     if (!isFinite(t)) t = 0;
@@ -445,6 +459,14 @@
   }
 
   if (film) {
+    var filmLoading = document.getElementById('filmLoading');
+    function filmBufferHint(on) {
+      if (filmLoading) filmLoading.classList.toggle('on', !!on);
+    }
+    film.addEventListener('waiting', function () { filmBufferHint(true); });
+    film.addEventListener('playing', function () { filmBufferHint(false); });
+    film.addEventListener('canplay', function () { filmBufferHint(false); });
+    film.addEventListener('loadeddata', function () { filmBufferHint(false); });
     film.addEventListener('loadedmetadata', filmUI);
     film.addEventListener('timeupdate', filmUI);
     film.addEventListener('play', filmUI);

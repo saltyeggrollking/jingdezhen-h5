@@ -126,9 +126,9 @@
           <div class="film reveal" style="--d:.14s">
             <div class="film-frame" id="filmFrame">
               <div class="film-screen">
-                <video id="filmVideo" src="media/film.mp4" poster="media/film-poster.jpg"
+                <video id="filmVideo" poster="media/film-poster.jpg"
                        width="1920" height="1080"
-                       preload="metadata" playsinline webkit-playsinline muted loop></video>
+                       preload="auto" playsinline webkit-playsinline muted loop></video>
                 <button class="film-play" id="filmPlay" type="button" aria-label="播放或暂停">
                   <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
                     <path class="icon-play" d="M8.5 5.5 v13 l11 -6.5 z" fill="currentColor"/>
@@ -139,6 +139,7 @@
                   </svg>
                 </button>
                 <span class="film-tag">影像 · 景德镇</span>
+                <span class="film-loading" id="filmLoading" aria-live="polite">缓冲中…</span>
               </div>
             </div>
             <div class="film-bar">

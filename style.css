@@ -833,6 +833,25 @@ body {
 .icon-pause { display: none; }
 .film-frame.playing .icon-pause { display: block; }
 .film-frame.playing .icon-play { display: none; }
+/* 弱网缓冲提示：仅在视频等待数据时短暂出现 */
+.film-loading {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: rgba(246, 243, 234, 0.9);
+  background: rgba(12, 18, 22, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.film-loading.on { opacity: 1; }
+
 .film-tag {
   position: absolute;
   left: 10px;
