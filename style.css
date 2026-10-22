@@ -786,8 +786,8 @@ body {
 .film-screen {
   position: relative;
   width: 100%;
-  /* 1280 x 720 原生比例：不裁切、不拉伸 */
-  aspect-ratio: 1280 / 720;
+  /* 1920 x 1080 原生比例：不裁切、不拉伸 */
+  aspect-ratio: 1920 / 1080;
   overflow: hidden;
   background: #0d1418;
 }
