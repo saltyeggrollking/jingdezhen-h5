@@ -440,43 +440,50 @@
 
     fetch(src, { method: 'HEAD' }).then(function (h) {
       var size = +(h.headers.get('content-length') || 0);
-      var p = Promise.resolve(null);
+      if (!(size > 0)) return fetch(src).then(function (r) { return r.blob(); });
 
-      if (size > 0) {
-        /* 6 路并行 Range 下载：单连接被限速时也能吃满带宽 */
-        var N = 6, chunk = Math.ceil(size / N), parts = new Array(N), got = 0;
-        p = Promise.all(Array.from({ length: N }, function (_, i) {
-          var from = i * chunk, to = Math.min(size, from + chunk) - 1;
-          if (from > to) { parts[i] = new ArrayBuffer(0); return Promise.resolve(); }
-          return fetch(src, { headers: { Range: 'bytes=' + from + '-' + to } }).then(function (r) {
-            return r.arrayBuffer().then(function (buf) {
-              got += buf.byteLength;
-              filmSetHint('缓冲中 ' + Math.min(99, Math.round(got / size * 100)) + '%', true);
-              parts[i] = buf;
-            });
-          });
-        })).then(function () {
-          return new Blob(parts, { type: 'video/mp4' });
+      /* 6 路并行 Range 下载：单连接常被中途掐断，多连接能稳定拉完整片 */
+      var N = 6, chunk = Math.ceil(size / N), parts = new Array(N), got = 0;
+
+      function grab(i, from, to, attempt) {
+        if (from > to) { parts[i] = new ArrayBuffer(0); return Promise.resolve(); }
+        return fetch(src, { headers: { Range: 'bytes=' + from + '-' + to } }).then(function (r) {
+          if (!r.ok && r.status !== 206) throw new Error('http ' + r.status);
+          return r.arrayBuffer();
+        }).then(function (buf) {
+          if (!buf || buf.byteLength !== (to - from + 1)) throw new Error('short');
+          got += buf.byteLength;
+          filmSetHint('缓冲中 ' + Math.min(99, Math.round(got / size * 100)) + '%', true);
+          parts[i] = buf;
+        }).catch(function () {
+          /* 分片断流：最多重试 4 次，避免一处失败导致整片退回边下边播 */
+          if (attempt >= 4) throw new Error('chunk fail');
+          return grab(i, from, to, attempt + 1);
         });
-      } else {
-        /* 没有 Content-Length 就整片单流下载 */
-        p = fetch(src).then(function (r) { return r.blob(); });
       }
 
-      return p.then(function (blob) {
-        if (!blob || !blob.size) throw new Error('empty');
-        filmBlobURL = URL.createObjectURL(blob);
-        var at = film.currentTime, playing = !film.paused && !film.ended;
-        film.src = filmBlobURL;
-        film.load();
-        film.addEventListener('loadedmetadata', function once() {
-          film.removeEventListener('loadedmetadata', once);
-          if (at > 0) { try { film.currentTime = at; } catch (err) {} }
-          if (playing) { var pp = film.play(); if (pp && pp.catch) pp.catch(function () {}); }
-          filmUI();
-        });
-        filmSetHint('缓冲中…', false);
+      var jobs = [];
+      for (var i = 0; i < N; i++) {
+        var from = i * chunk, to = Math.min(size, from + chunk) - 1;
+        jobs.push(grab(i, from, to, 1));
+      }
+      return Promise.all(jobs).then(function () {
+        return new Blob(parts, { type: 'video/mp4' });
       });
+    }).then(function (blob) {
+      if (!blob || !blob.size) throw new Error('empty');
+      filmBlobURL = URL.createObjectURL(blob);
+      var at = film.currentTime, playing = !film.paused && !film.ended;
+      film.src = filmBlobURL;
+      film.load();
+      film.addEventListener('loadedmetadata', function once() {
+        film.removeEventListener('loadedmetadata', once);
+        if (at > 0) { try { film.currentTime = at; } catch (err) {} }
+        if (playing) { var pp = film.play(); if (pp && pp.catch) pp.catch(function () {}); }
+        filmUI();
+      });
+      filmSetHint('缓冲中…', false);
+      filmPrefetching = false;
     }).catch(function () {
       /* 预取失败：保持原来的边下边播 */
       filmPrefetching = false;
@@ -570,6 +577,8 @@
 
   /* 初始化：若直接落在影片页或附近，立即开始整片预取 */
   if (film && filmIndex > -1 && index >= filmIndex - 1) filmStartPrefetch();
+  /* 其余情况等首页稳定后延迟预取，用户翻到第 2 页时通常已就绪 */
+  else if (film) setTimeout(filmStartPrefetch, 2500);
 
   /* 调试直达：?p=页码 */
   var pm = new URLSearchParams(location.search).get('p');
