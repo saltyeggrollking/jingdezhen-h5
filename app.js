@@ -402,6 +402,8 @@
   var filmFrame = document.getElementById('filmFrame');
   var filmPlay = document.getElementById('filmPlay');
   var filmMute = document.getElementById('filmMute');
+  var filmQuality = document.getElementById('filmQuality');
+  var filmLite = false;
   var filmFill = document.getElementById('filmFill');
   var filmTrack = document.getElementById('filmTrack');
   var filmTime = document.getElementById('filmTime');
@@ -462,6 +464,28 @@
       filmMute.textContent = film.muted ? '开启声音' : '关闭声音';
       if (!film.muted && film.paused) filmToggle();
     });
+    if (filmQuality) {
+      filmQuality.addEventListener('click', function (e) {
+        e.stopPropagation();
+        filmLite = !filmLite;
+        var at = film.currentTime;
+        var playing = !film.paused && !film.ended;
+        film.src = filmLite ? 'media/film-lite.mp4' : 'media/film.mp4';
+        film.load();
+        film.addEventListener('loadedmetadata', function once() {
+          film.removeEventListener('loadedmetadata', once);
+          if (at > 0) film.currentTime = at;
+          if (playing) {
+            var pr = film.play();
+            if (pr && pr.catch) pr.catch(function () {});
+          }
+          filmUI();
+        });
+        filmQuality.classList.toggle('on', filmLite);
+        filmQuality.textContent = filmLite ? '原画质' : '省流量';
+        filmUI();
+      });
+    }
     filmTrack.addEventListener('click', function (e) {
       e.stopPropagation();
       if (!film.duration) return;
